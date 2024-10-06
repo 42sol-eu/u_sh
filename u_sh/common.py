@@ -12,15 +12,19 @@ project:
 
 
 # [Imports]
-from rich import print                  # [docs](https://rich.readthedocs.io)
-from rich.console import Console
-from pathlib import Path            # [docs](https://docs.python.org/3/library/pathlib.html)
-
-from u_sh.result import Result
+from rich import print                                     # [docs](https://rich.readthedocs.io)
+from rich.console import Console                           #
+from typing import Union                                   # [docs](https://docs.python.org/3/library/typing.html)
+from pathlib import Path                                   # [docs](https://docs.python.org/3/library/pathlib.html)
+from contextlib import contextmanager                      # [docs](https://docs.python.org/3/library/contextlib.html)
+from u_sh.result import Result, ErrorState, ErrorCode                          #       
 
 # [Parameters]
+Yes, No = True, False
 
 # [Global_Variables]
 console = Console()
 
 # [Code]
+def log( message: str ):
+    console.print(f"[bold blue]Log:[/bold blue] {message}")
