@@ -1,0 +1,23 @@
+Cat;Command;Alias;Description
+_FD;``copy_object(src, dest)``;``cp``;Copy files.
+_FD;``move_object(src, dest)``;``mv``;Move or rename files.
+_FD;``link_object(src, dest, symbolic=False)``;``ln``;Create a link to a file or directory.
+_F_;``remove_file(path)``;``rm``;Remove files or directoryies.
+_F_;``create_file(path, content=None)``;``touch``;Create a file or update the timestamp of an existing file.
+_F_;``display_file(paths)``;``cat``;Concatenate and display file content.
+_F_;``edit( file_path)``; ``micro`` or ``vim``;Text editors to edit files directly from the terminal.
+__D;``working_directory() : str``;``pwd``;Print the current working directory.
+__D;``list_directory(path, options=None)``;``ls``;List directory contents.
+__D;``change_directory(path : str)``;``cd``;Change the current directory.
+__D;``make_directory(path : str)``;``mkdir``;Create a new directory.
+__D;``remove_directory(path : str)``;``rmdir``;Remove an empty directory.
+__D;``push_directory(path : str)``;``pushd``;Save the current directory and change to a new directory.
+__D;``pop_directory()``;``popd``;Restore the last directory saved by pushd.
+_FD;``change_mode(path : str, mode : ModeEnum)``;``chmod``;Change file modes or Access Control Lists.
+_FD;``change_owner(path : str, owner : str, group : str or None)``;``chown``;Change file owner and group.
+C__;``type(path : str) -> TypeEnum``;``...``;Get the type of an object (file, directory or link).
+C__;``find(path, pattern)``;``find``;Search for files in a directory hierarchy.
+C__;``echo_text(text)``;``echo``;Display a line of text.
+C__;``search_text(pattern, file)``;``grep``;Search text using patterns.
+C__;``display_manual(command)``;``man``;Display the manual for a command.
+C__;``command_history()``;``history``;Display the command history (Shortcut <Ctrl+R>.

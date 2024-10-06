@@ -1,7 +1,9 @@
 # Readme: u_sh
 
 ## Goal 
-
+1. Create a full replacement for all default shell commands in python using either the command line (`click`), the Python-REPL or python scripts.
+2. Use full names and their abbreviations for the commands (e.g. `create_directory` and `cd`).
+3. Use `with` Contexts where possilbe
 
 
 ## Usage 

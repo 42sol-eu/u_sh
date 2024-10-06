@@ -55,7 +55,7 @@ class Result:
     """
     # -------------------------------------------------------------
     @classmethod
-    def ok(cls,value:any=None):
+    def ok(cls,value:any=None) -> self:
         """ Classmethod ok"""
         return cls(error_state=ErrorState.Ok, value=value)
     
