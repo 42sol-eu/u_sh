@@ -15,6 +15,7 @@ project:
 from rich import print                                                         # [docs](https://rich.readthedocs.io)
 from rich.console import Console                                               #
 from pathlib import Path                                                       # [docs](https://docs.python.org/3/library/pathlib.html)
+from shutil import copyfile                                                    # [docs](https://docs.python.org/3/library/shutil.html) 
 from u_sh.result import Result, ErrorState, ErrorCode                          #       
 from u_sh.common import *                                                      #
 
@@ -43,14 +44,36 @@ def file_write(file_name : Union[str,Path]):
         file.close()
 
 
+def touch_file(file_name : Union[str,Path]) -> Result:
+    """
+    Create a file if it does not exist
+    
+    Args:
+        file_name (Union[str,Path]): the file name
+    """
+    if type(file_name) == str:
+        file_name = Path(file_name)
+
+    if file_name.parent.exists():
+        try:
+            file_name.touch()
+        except Exception as e:
+            console.print(f"[red]Error: {e}[/red]")
+            return Result(ErrorState.Error, ErrorCode.FileError, f'Error: {file_name} exception={e}')
+    else:
+        return Result(ErrorState.Error, ErrorCode.DirectoryError, f'Error: parent directory {file_name.parent} does not exist')
+    
+    return Result.ok()
+
 
 def copy_file( file_name : Union[str,Path], to_path : Union[str,Path] ) -> Result:
     """
     Copy a file to a new location
+    Parent directories are created if they do not exist.    
     
     Args:
         file_name (Union[str,Path]): the source file
-        to_path (Union[str,Path]):   the destination path
+        to_path (Union[str,Path]):   the destination path (with or without the file name)
 
     """
     # check if the `file_name` exists
@@ -59,20 +82,33 @@ def copy_file( file_name : Union[str,Path], to_path : Union[str,Path] ) -> Resul
 
     if not file_name.exists():
         console.print(f"[red]Error: {file_name} does not exist[/red]")
-        return 
-    
-    with open(file_name, 'r') as file:
-        data = file.read()
-
-
+        return Result(ErrorState.Error, ErrorCode.FileNotFound, f'Error: source file {file_name} does not exist')
 
     # check if the `to_path` is a directory
-    sink_path = Path(to_path)
-    if sink_path.is_dir():
-        sink_path = sink_path / file_name
+    if type(to_path) == str:
+        to_path = Path(to_path) 
 
-    with open(to_path, 'w') as file:
-        file.write(data)
+    if to_path.is_dir():
+        # append the file name to the destination path
+        to_path = to_path / file_name
+    elif not to_path.exists():
+        # check if the parent directory exists
+        parent = to_path.parent
+        log(f'creating parent directory: {parent}')
+        if not parent.exists():
+            try:
+                parent.mkdir(parents=True)    
+            except Exception as e:
+                console.print(f"[red]Error: {e}[/red]")
+                return Result(ErrorState.Error, ErrorCode.DirectoryError, f'Error: can not create parent directory {parent} exception={e}')
+    try:
+        copyfile(file_name, to_path)
+    except Exception as e:
+        console.print(f"[red]Error: {e}[/red]")
+        return Result(ErrorState.Error, ErrorCode.FileError, f'Error: {file_name}, {to_path} exeptoin={e}') 
+    
+    return Result.ok()
+
 
 # [Main]
 if __name__ == "__main__":

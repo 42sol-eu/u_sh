@@ -42,9 +42,11 @@ class ErrorCode(Enum):
     DirectoryNotWritable = 1103
     UnspecificFatal = 2000
 
+#TODO: add exception handling on error
+
 #ErrorState = Enum('ErrorState', [('Ok',0), ('Error',1), ('Fatal',2)])
 current_function_name = lambda n=0: sys._getframe(n + 1).f_code.co_name
-# TODO: what is current_function_name for, why is it not used
+#TODO: what is current_function_name for, why is it not used
 
 class Result:
     """

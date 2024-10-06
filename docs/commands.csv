@@ -1,16 +1,21 @@
 Cat;Command;Alias;Description
-_FD;``copy_object(src, dest)``;``cp``;Copy files.
-_FD;``move_object(src, dest)``;``mv``;Move or rename files.
-_FD;``link_object(src, dest, symbolic=False)``;``ln``;Create a link to a file or directory.
+_F_;``touch_file(file_name)``;``touch``;Create a file or update the timestamp of an existing file.
+_FD;``copy_object(object_name, to_path)``;``cp``;Copy files. TODO: implement the `copy_object` function based on `copy_file` and `copy_directory` functions.
+_F_;``copy_file(file_name, to_path)``;``cp``;Copy a file to a directory.
+__D;``copy_directory(direcotry_name, to_path)``;``cp``;Copy directories. TODO: test `copy_directory` function.
+_FD;``copy_link(link_name, to_path)``;``cp``;Copy a link to a file or directory. TODO: check if ``copy_link`` needs to be implemented.
+_FD;``move_object(object_name, to_path)``;``mv``;Move or rename files. TOOD: next implemntation move_object, TODO: check for links on the moved object (same folder esp. /usr/bin/ or full tree)
+L__;``link_object(object_name, to_path, symbolic=False)``;``ln``;Create a link to a file or directory.
 _F_;``remove_file(path)``;``rm``;Remove files or directoryies.
+__D;``remove_directory(path : str)``;``rmdir``;Remove an empty directory.
+L__;``remove_link(path)``;``rm``;Remove a link. TODO: check what about the last hardlink to a object? (this would not only remove the link but the object itself) 
 _F_;``create_file(path, content=None)``;``touch``;Create a file or update the timestamp of an existing file.
 _F_;``display_file(paths)``;``cat``;Concatenate and display file content.
-_F_;``edit( file_path)``; ``micro`` or ``vim``;Text editors to edit files directly from the terminal.
+_F_;``edit(file_path)``; ``micro`` or ``vim``;Text editors to edit files directly from the terminal.
 __D;``working_directory() : str``;``pwd``;Print the current working directory.
 __D;``list_directory(path, options=None)``;``ls``;List directory contents.
 __D;``change_directory(path : str)``;``cd``;Change the current directory.
 __D;``make_directory(path : str)``;``mkdir``;Create a new directory.
-__D;``remove_directory(path : str)``;``rmdir``;Remove an empty directory.
 __D;``push_directory(path : str)``;``pushd``;Save the current directory and change to a new directory.
 __D;``pop_directory()``;``popd``;Restore the last directory saved by pushd.
 _FD;``change_mode(path : str, mode : ModeEnum)``;``chmod``;Change file modes or Access Control Lists.
@@ -20,4 +25,5 @@ C__;``find(path, pattern)``;``find``;Search for files in a directory hierarchy.
 C__;``echo_text(text)``;``echo``;Display a line of text.
 C__;``search_text(pattern, file)``;``grep``;Search text using patterns.
 C__;``display_manual(command)``;``man``;Display the manual for a command.
-C__;``command_history()``;``history``;Display the command history (Shortcut <Ctrl+R>.
+C__;``command_history()``;``history``;Display the command history (Shortcut <Ctrl+R>.)
+L__;``broken_links(search_path)``;``find``;Find broken links in a directory structure (use ``/`` for the full file system). TODO: Windows needs to check all drives then.

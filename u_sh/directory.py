@@ -14,10 +14,10 @@ project:
 from rich import print                                                         # [docs](https://rich.readthedocs.io)
 from rich.console import Console                                               #
 from pathlib import Path                                                       # [docs](https://docs.python.org/3/library/pathlib.html)
+from shutil import copytree                                                    # [docs](https://docs.python.org/3/library/shutil.html)
 from os import chdir                                                           # [docs](https://docs.python.org/3/library/os.html)
 from u_sh.result import Result, ErrorState, ErrorCode                          #       
 from u_sh.common import *                                                      #
-
 # [Parameters]
 
 # [Global_Variables]
@@ -47,6 +47,48 @@ def directory(directory_name: Union[str, Path]):
     finally:
         log(f"directory: {directory_name} released -> {previous_directory}")
         change_directory(previous_directory)
+
+def copy_directory( directory_name : Union[str,Path], to_path : Union[str,Path] ) -> Result:
+    """
+    Copy a directory to a new location.
+    Parent directories are created if they do not exist.
+    
+    Args:
+        directory_name (Union[str,Path]): the source directory
+        to_path (Union[str,Path]):        the destination path
+
+    """
+    # check if the `directory_name` exists
+    if type(directory_name) == str:
+        directory_name = Path(directory_name) 
+
+    if not directory_name.exists():
+        console.print(f"[red]Error: {directory_name} does not exist[/red]")
+        return Result(ErrorState.Error, ErrorCode.DirectoryNotFound, f"the source directory {directory_name} does not exist")
+
+    # check if the `to_path` exists
+    if type(to_path) == str:
+        to_path = Path(to_path) 
+
+    if not to_path.exists():
+        log(f'creating directory: {to_path}')
+        to_path.mkdir() 
+
+    # check if the `to_path` is a directory
+    if not to_path.is_dir():
+        console.print(f"[red]Error: {to_path} is not a directory[/red]")
+        return Result(ErrorState.Error, ErrorCode.DirectoryError, f"the destination path {to_path} is not a directory")
+
+    # copy the directory
+    try:
+        log(f"copying {directory_name} to {to_path}")
+        copytree(directory_name, to_path)
+    except Exception as e:
+        #TODO: optimize error handling for this exception
+        console.print(f"[red]Error: {e}[/red]")
+        return Result(ErrorState.Error, ErrorCode.UnknownError)
+    
+    return Result.ok()
 
 def list_directory(directory : Union[str,Path] = '.'):
     """
